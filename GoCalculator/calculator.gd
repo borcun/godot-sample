@@ -68,10 +68,10 @@ func enterOperator( op ):
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
-			operator = "+"
 		else:
 			enteredNumber += toNumber( text )
 			get_node("Label").set_text( str( enteredNumber ) )
+			#get_node("Label").set_text( String( enteredNumber ) )
 			
 			isOperationDone = true
 	# subtract operator
@@ -81,10 +81,10 @@ func enterOperator( op ):
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
-			operator = "-"
 		else:
 			enteredNumber -= toNumber( text )
 			get_node("Label").set_text( str( enteredNumber ) )
+			#get_node("Label").set_text( String( enteredNumber ) )
 			
 			isOperationDone = true
 	# multiply operator
@@ -94,10 +94,10 @@ func enterOperator( op ):
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
-			operator = "*"
 		else:
 			enteredNumber *= toNumber( text )
 			get_node("Label").set_text( str( enteredNumber ) )
+			#get_node("Label").set_text( String( enteredNumber ) )
 			
 			isOperationDone = true
 	# division operator	
@@ -107,12 +107,12 @@ func enterOperator( op ):
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
-			operator = "/"
 		# prevent the zero divider
-		# @todo: improve zero division
+		# @todo: improve zero division for 0.000...
 		elif text != "0":
 			enteredNumber /= toNumber( text )
 			get_node("Label").set_text( str( enteredNumber ) )
+			#get_node("Label").set_text( String( enteredNumber ) )
 			
 			isOperationDone = true
 	# mode operator	
@@ -123,12 +123,12 @@ func enterOperator( op ):
 				get_node("Label").set_text("")
 				
 				isNumberEntered = true
-				operator = "%"
 			# prevent the zero mode
 			else:
 				if text != "0":
 					enteredNumber = enteredNumber % int( text )
 					get_node("Label").set_text( str( enteredNumber ) )
+					#get_node("Label").set_text( String( enteredNumber ) )
 					
 					isOperationDone = true
 	# calculate operator	
@@ -213,26 +213,31 @@ func _onClickButtonClear():
 # @brief The add button event function
 # @return -
 func _onClickButtonAdd():
+	operator = "+"
 	enterOperator( "+" )
 	
 # @brief The subtract button event function
 # @return -
 func _onClickButtonSubtract():
+	operator = "-"
 	enterOperator( "-" )
 	
 # @brief The multiply button event function
 # @return -
 func _onClickButtonMultiply():
+	operator = "*"
 	enterOperator( "*" )
 	
 # @brief The division button event function
 # @return -
 func _onClickButtonDivision():
+	operator = "/"
 	enterOperator( "/" )
 	
 # @brief The mode button event function
 # @return -
 func _onClickButtonMode():
+	operator = "%"
 	enterOperator( "%" )
 	
 # @brief The calculate button event function
