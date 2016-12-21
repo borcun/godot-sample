@@ -1,9 +1,10 @@
 
 extends Panel
 
-var number
-var isNumberEntered = false
+var enteredNumber = 0
 var operator = ""
+var isNumberEntered = false
+var isOperationDone = false
 
 func _ready():
 	# link button events
@@ -38,13 +39,17 @@ func toNumber( text ):
 # @return -
 func enterNumber( num ):
 	var text = get_node("Label").get_text()
-	
+
 	# if the zero is entered only, delete it and write entered number on label
 	if text.length() == 1 and int( text ) == 0:
 		get_node("Label").set_text( num )
 	# if the label had already right number, push back new number after it
 	else:
-		get_node("Label").set_text( get_node("Label").get_text() + num )
+		if isOperationDone:
+			isOperationDone = false
+			get_node("Label").set_text( num )
+		else:
+			get_node("Label").set_text( get_node("Label").get_text() + num )
 		
 # @brief function is called when the user enters any operator
 # @param op - user operator
@@ -59,40 +64,46 @@ func enterOperator( op ):
 	# add operator
 	if "+" == op:
 		if !isNumberEntered:
-			number = toNumber( text )
+			enteredNumber = toNumber( text )
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
 			operator = "+"
 		else:
-			number += toNumber( text )
-			get_node("Label").set_text( str( number ) )
+			enteredNumber += toNumber( text )
+			get_node("Label").set_text( str( enteredNumber ) )
+			
+			isOperationDone = true
 	# subtract operator
 	elif "-" == op:
 		if !isNumberEntered:
-			number = toNumber( text )
+			enteredNumber = toNumber( text )
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
 			operator = "-"
 		else:
-			number -= toNumber( text )
-			get_node("Label").set_text( str( number ) )
+			enteredNumber -= toNumber( text )
+			get_node("Label").set_text( str( enteredNumber ) )
+			
+			isOperationDone = true
 	# multiply operator
 	elif "*" == op:
 		if !isNumberEntered:
-			number = toNumber( text )
+			enteredNumber = toNumber( text )
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
 			operator = "*"
 		else:
-			number *= toNumber( text )
-			get_node("Label").set_text( str( number ) )
+			enteredNumber *= toNumber( text )
+			get_node("Label").set_text( str( enteredNumber ) )
+			
+			isOperationDone = true
 	# division operator	
 	elif "/" == op:
 		if !isNumberEntered:
-			number = toNumber( text )
+			enteredNumber = toNumber( text )
 			get_node("Label").set_text("")
 			
 			isNumberEntered = true
@@ -100,13 +111,15 @@ func enterOperator( op ):
 		# prevent the zero divider
 		# @todo: improve zero division
 		elif text != "0":
-			number /= toNumber( text )
-			get_node("Label").set_text( str( number ) )
+			enteredNumber /= toNumber( text )
+			get_node("Label").set_text( str( enteredNumber ) )
+			
+			isOperationDone = true
 	# mode operator	
 	elif "%" == op:
 		if text.find( "." ) == -1:
 			if !isNumberEntered:
-				number = int( text )
+				enteredNumber = int( text )
 				get_node("Label").set_text("")
 				
 				isNumberEntered = true
@@ -114,8 +127,10 @@ func enterOperator( op ):
 			# prevent the zero mode
 			else:
 				if text != "0":
-					number = number % int( text )
-					get_node("Label").set_text( str( number ) )
+					enteredNumber = enteredNumber % int( text )
+					get_node("Label").set_text( str( enteredNumber ) )
+					
+					isOperationDone = true
 	# calculate operator	
 	elif "=" == op:
 		# if the first number was already entered, call function with entered operator recursively
